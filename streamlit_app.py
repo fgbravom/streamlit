@@ -1,29 +1,18 @@
-import streamlit as st
-from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate
+# Crear la ventana principal
+root = tk.Tk()
+root.title("Extractor de ID de Notion")
 
-st.title("🦜🔗 Langchain - Blog Outline Generator App")
+# Crear la caja de texto para pegar el enlace
+entry = tk.Entry(root, width=50)
+entry.pack(pady=10)
 
-openai_api_key = st.sidebar.text_input("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", type="password")
+# Botón para extraer el ID
+extract_button = tk.Button(root, text="Extraer ID", command=extract_notion_id)
+extract_button.pack(pady=5)
 
+# Etiqueta para mostrar el ID extraído
+id_label = tk.Label(root, text="")
+id_label.pack(pady=5)
 
-def blog_outline(topic):
-    # Instantiate LLM model
-    llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
-    # Prompt
-    template = "As an experienced data scientist and technical writer, generate an outline for a blog about {topic}."
-    prompt = PromptTemplate(input_variables=["topic"], template=template)
-    prompt_query = prompt.format(topic=topic)
-    # Run LLM model
-    response = llm(prompt_query)
-    # Print results
-    return st.info(response)
-
-
-with st.form("myform"):
-    topic_text = st.text_input("Enter prompt:", "")
-    submitted = st.form_submit_button("Submit")
-    if not openai_api_key:
-        st.info("Please add your OpenAI API key to continue.")
-    elif submitted:
-        blog_outline(topic_text)
+# Ejecutar la ventana
+root.mainloop()
